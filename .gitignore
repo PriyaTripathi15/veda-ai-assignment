@@ -1,0 +1,59 @@
+### Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+### Environment files
+.env
+.env.local
+.env.*.local
+
+### Next.js
+.next/
+out/
+.vercel/
+
+### Build outputs
+dist/
+build/
+lib/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+
+### Logs
+logs/
+*.log
+npm-debug.log*
+
+### Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+
+### OS generated files
+.DS_Store
+Thumbs.db
+
+### Misc
+.cache/
+.parcel-cache/
+.serverless/
+.turbo/
+/.pnp
+.pnp.js
+*.tgz
+
+### Frontend specific
+/frontend/.next/
+/frontend/out/
+/frontend/node_modules/
+
+### Backend specific
+/backend/node_modules/
+/backend/dist/
+/backend/build/
+/backend/.env
