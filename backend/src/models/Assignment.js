@@ -9,6 +9,12 @@ const assignmentSchema = new mongoose.Schema(
     subject: {
       type: String
     },
+    className: {
+      type: String
+    },
+    duration: {
+      type: String
+    },
     dueDate: {
       type: String
     },

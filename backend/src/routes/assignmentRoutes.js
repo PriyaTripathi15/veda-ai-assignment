@@ -38,6 +38,8 @@ function normalisePayload(body) {
   return {
     title,
     subject: String(body.subject || title).trim(),
+    className: String(body.className || body.class || "").trim() || undefined,
+    duration: String(body.duration || "").trim() || undefined,
     dueDate: dueDate || undefined,
     questionType,
     numberOfQuestions: parsePositiveNumber(body.numberOfQuestions, "Number of questions"),
@@ -119,6 +121,31 @@ router.post("/create", upload.single("file"), async (req, res) => {
     });
   }
 });
+
+// Paginated list endpoint - placed before the "/:id" route to avoid route collision
+router.get("/", async (req, res) => {
+  try {
+    const page = Math.max(1, Number(req.query.page) || 1)
+    const limit = Math.max(1, Math.min(100, Number(req.query.limit) || 10))
+    const skip = (page - 1) * limit
+
+    const [total, assignments] = await Promise.all([
+      Assignment.countDocuments(),
+      Assignment.find()
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+    ])
+
+    const totalPages = Math.ceil(total / limit)
+
+    return res.json({ page, limit, total, totalPages, assignments })
+  } catch (error) {
+    console.error("Unable to list assignments", error)
+    return res.status(500).json({ message: "Unable to list assignments", error: error.message })
+  }
+})
 
 router.get("/:id", async (req, res) => {
   try {

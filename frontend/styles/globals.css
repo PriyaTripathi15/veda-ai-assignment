@@ -122,4 +122,18 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Force black text on white backgrounds to ensure readability */
+  [class*="bg-white"], [class*="bg-[#"] {
+    color: #000 !important;
+  }
+
+  [class*="bg-white"] *, [class*="bg-[#"] * {
+    color: #000 !important;
+  }
+
+  /* Explicit white-card helper for components that should always use black text */
+  .card-white, .card-white * {
+    color: #000 !important;
+  }
 }

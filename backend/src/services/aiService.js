@@ -57,6 +57,9 @@ function buildPrompt(data, topic, sourceContext) {
   const parts = [
     `Create a structured exam paper titled \"${normaliseText(data.title)}\".`,
     `Target topic: ${topic}.`,
+    `Subject: ${normaliseText(data.subject || topic)}.`,
+    `Class/Section: ${normaliseText(data.className || "unspecified")}.`,
+    `Duration: ${normaliseText(data.duration || "derive a reasonable duration")}.`,
     `Question type: ${normaliseText(data.questionType)}.`,
     `Number of questions: ${Number(data.numberOfQuestions) || 0}.`,
     `Total marks: ${Number(data.marks) || 0}.`,
@@ -243,14 +246,16 @@ function generateStructuredPaper(data) {
     };
   });
 
-  const durationMinutes = Math.max(45, Math.min(180, totalMarks * 2));
+  const durationText = normaliseText(data.duration);
+  const durationMinutes = durationText || `${Math.max(45, Math.min(180, totalMarks * 2))} minutes`;
 
   return {
     prompt,
     paper: {
       title: normaliseText(data.title),
-      subject: topic,
-      duration: `${durationMinutes} minutes`,
+      subject: normaliseText(data.subject || topic),
+      className: normaliseText(data.className || ""),
+      duration: durationMinutes,
       totalMarks,
       sections,
       studentInfo: {

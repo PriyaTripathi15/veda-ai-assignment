@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "html2pdf.js": "^0.14.0",
     "mongoose": "^9.6.2"
   }
 }

@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#4B5563",
   },
+  className: {
+    fontSize: 10,
+    color: "#4B5563",
+    marginTop: 2,
+  },
   metaRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -110,6 +115,7 @@ export function QuestionPaperDocument({ paper }: QuestionPaperDocumentProps) {
         <View style={styles.header}>
           <Text style={styles.title}>{paper.title}</Text>
           <Text style={styles.subtitle}>{paper.subject}</Text>
+          {paper.className ? <Text style={styles.className}>Class: {paper.className}</Text> : null}
         </View>
 
         <View style={styles.metaRow}>
@@ -149,7 +155,7 @@ export function QuestionPaperDocument({ paper }: QuestionPaperDocumentProps) {
                   <Text style={styles.questionIndex}>{index + 1}. {question.text}</Text>
                   <Text style={styles.questionMarks}>{question.marks} marks</Text>
                 </View>
-                <Text style={styles.badge}>Difficulty: {question.difficulty}</Text>
+                <Text style={styles.badge}>Difficulty: {String(question.difficulty).toUpperCase()}</Text>
               </View>
             ))}
           </View>

@@ -13,6 +13,8 @@ interface AssessmentState {
   jobMessage: string
   socketConnected: boolean
   error: string | null
+  showBuilder: boolean
+  setShowBuilder: (show: boolean) => void
   setSocketConnected: (connected: boolean) => void
   setJobState: (status: AssignmentJobStatus, message?: string) => void
   setCurrentAssignment: (assignment: BackendAssignment | null) => void
@@ -35,6 +37,8 @@ export const useAssessmentStore = create<AssessmentState>((set) => ({
   socketConnected: false,
   error: null,
   setSocketConnected: (connected) => set({ socketConnected: connected }),
+  showBuilder: false,
+  setShowBuilder: (show) => set({ showBuilder: show }),
   setJobState: (status, message = "") => set({ jobStatus: status, jobMessage: message }),
   setCurrentAssignment: (assignment) => set({ currentAssignment: assignment }),
   setGeneratedPaper: (paper) => set({ generatedPaper: paper }),

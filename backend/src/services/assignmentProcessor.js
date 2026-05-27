@@ -20,6 +20,9 @@ async function processAssignment(assignmentId) {
 
   const generated = generateStructuredPaper({
     title: assignment.title,
+    subject: assignment.subject,
+    className: assignment.className,
+    duration: assignment.duration,
     dueDate: assignment.dueDate,
     questionType: assignment.questionType,
     numberOfQuestions: assignment.numberOfQuestions,

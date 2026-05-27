@@ -24,6 +24,7 @@ export interface GeneratedSection {
 export interface GeneratedPaper {
   title: string
   subject: string
+  className?: string
   duration: string
   totalMarks: number
   sections: GeneratedSection[]
@@ -39,6 +40,9 @@ export interface AssessmentData {
   title: string
   file: File | null
   dueDate: Date | undefined
+  subject?: string
+  duration?: string
+  className?: string
   questionType: string
   numberOfQuestions: number
   totalMarks: number
@@ -49,6 +53,8 @@ export interface BackendAssignment {
   _id: string
   title: string
   subject?: string
+  className?: string
+  duration?: string
   dueDate?: string
   questionType: string
   numberOfQuestions: number

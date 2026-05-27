@@ -1,75 +1,107 @@
-# VedaAI – AI Assessment Creator
+# VedaAI - AI Assessment Creator
 
-Full stack assessment creator built for the VedaAI assignment.
+A full-stack assessment generator for teachers. The app lets a teacher create an assignment, upload optional source material, define question types and scoring, and generate a structured question paper with AI-assisted content.
 
 ## What It Does
 
-- Create an assessment with title, due date, question type, number of questions, marks, and optional file upload.
-- Generate a structured question paper with sections, questions, difficulty tags, and marks.
-- Show generation status in real time with WebSocket updates.
-- Export the final paper as a properly formatted PDF.
+- Create a new assignment from a clean form UI
+- Upload optional PDF or text source material
+- Set due date, subject, class/section, duration, and instructions
+- Configure question mix, counts, and marks
+- Generate a structured paper with sections, difficulty tags, and marks
+- View the generated output in a readable exam-paper layout
+- Download the generated paper as PDF
+- Receive live generation updates over WebSocket
 
-## Stack
+## Tech Stack
 
-- Frontend: Next.js, TypeScript, Zustand, Socket.IO client
-- Backend: Node.js, Express, MongoDB, BullMQ, Socket.IO
-- PDF export: `@react-pdf/renderer`
+### Frontend
+
+- Next.js
+- TypeScript
+- Zustand for state management
+- Socket.IO client
+- React PDF for export
+
+### Backend
+
+- Node.js + Express
+- MongoDB for assignments and generated results
+- Redis / BullMQ for queued background processing
+- Socket.IO for real-time job updates
+- AI service that converts form input into a structured paper
 
 ## Architecture
 
-1. The frontend submits an assessment form.
-2. The backend stores the assignment in MongoDB.
-3. If `REDIS_URL` is configured, the job is queued with BullMQ.
-4. A worker generates the structured paper and saves the result.
-5. The backend emits a Socket.IO update back to the frontend.
-6. The frontend renders the paper and can export it to PDF.
+1. The teacher submits the assignment form from the frontend.
+2. The backend validates and stores the assignment in MongoDB.
+3. If a queue is available, the job is pushed to BullMQ; otherwise it is processed immediately.
+4. The worker / processor builds a structured paper with sections, questions, marks, and difficulty.
+5. The backend persists the generated result and emits WebSocket updates.
+6. The frontend listens for those updates and renders the paper preview.
 
-If Redis is not configured, the backend falls back to inline generation so the project still works locally.
+## Project Structure
+
+- `frontend/` - Next.js app, form UI, generated paper preview, PDF export
+- `backend/` - Express API, assignment routes, queue, worker, AI generator
 
 ## Setup
 
 ### 1. Install dependencies
 
-```powershell
-cd C:\Users\DELL\OneDrive\Desktop\veda-ai-assignment\frontend
+```bash
+cd backend
 npm install
 
-cd C:\Users\DELL\OneDrive\Desktop\veda-ai-assignment\backend
+cd ../frontend
 npm install
 ```
 
-### 2. Configure backend env
+### 2. Configure environment variables
 
-Create or update `backend/.env`:
+Create the needed `.env` files in `backend/` and `frontend/`.
+
+Example backend variables:
 
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
-FRONTEND_URL=http://localhost:3000
-# Optional, enables BullMQ queue processing
-REDIS_URL=redis://localhost:6379
+MONGODB_URI=your_mongodb_connection_string
+REDIS_URL=your_redis_connection_string
+GOOGLE_GENERATIVE_AI_API_KEY=your_api_key_if_used
 ```
 
-### 3. Run the apps
+Example frontend variables:
 
-```powershell
-cd C:\Users\DELL\OneDrive\Desktop\veda-ai-assignment\backend
-npm start
+```env
+NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
 ```
 
-```powershell
-cd C:\Users\DELL\OneDrive\Desktop\veda-ai-assignment\frontend
+### 3. Run the app
+
+Start the backend:
+
+```bash
+cd backend
+npm run dev
+```
+
+Start the frontend:
+
+```bash
+cd frontend
 npm run dev
 ```
 
 ## Notes
 
-- The backend serves the API at `http://localhost:5000`.
-- The frontend runs at `http://localhost:3000`.
-- File upload accepts PDF or TXT.
-- The paper is rendered from structured data rather than a raw LLM dump.
+- File upload is optional.
+- The generated paper is structured before rendering; it does not print raw model output directly.
+- PDF export uses a dedicated document component for clean formatting.
+- The UI is designed to stay readable on desktop and mobile.
 
-## Links
+## Submission
 
-- GitHub Repo: https://github.com/BHAVANABHAVANAREDDY/veda-ai-assignment
-- Live Demo: https://veda-ai-assignment-roan.vercel.app
+- GitHub repository
+- Deployed link
+- README with setup and architecture details
+
