@@ -18,7 +18,6 @@ import {
 import { AssessmentForm } from "@/components/assessment-form"
 import { ExamPaper } from "@/components/exam-paper"
 import { Card, CardContent } from "@/components/ui/card"
-import Shell from "@/components/shell"
 
 import { connectSocket } from "@/lib/socket"
 import { useAssessmentStore } from "@/store/use-assessment-store"
@@ -69,7 +68,7 @@ export default function Home() {
   const [totalPages, setTotalPages] =
     useState(1)
 
-  const [limit] = useState(8)
+  const [limit] = useState(1000)
 
   const [loadingList, setLoadingList] =
     useState(false)
@@ -401,8 +400,7 @@ export default function Home() {
             <div className="max-w-2xl">
               <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 backdrop-blur">
                 <Sparkles className="h-4 w-4" />
-                AI Powered Question Paper
-                Generator
+                Question Paper Generator
               </div>
 
               <h1 className="text-5xl font-bold leading-tight">
@@ -610,76 +608,60 @@ export default function Home() {
 
   else {
     mainContent = (
-      <div className="grid gap-6 xl:grid-cols-2">
-        <div>
-          <AssessmentForm
-            onSubmit={
-              handleSubmitAssessment
-            }
-            isGenerating={
-              isGenerating
-            }
-          />
-        </div>
+      <div className="flex justify-center">
+        <div className="w-full max-w-screen-xl px-4">
+          <div className="mx-auto w-full max-w-[1100px]">
+            <AssessmentForm
+              onSubmit={handleSubmitAssessment}
+              isGenerating={isGenerating}
+            />
 
-        <div className="space-y-4">
-          {(jobStatus ===
-            "pending" ||
-            jobStatus ===
-              "queued" ||
-            jobStatus ===
-              "processing") &&
-          !generatedPaper ? (
-            <Card className="rounded-[26px] border-none bg-white shadow-[0_25px_45px_-35px_rgba(0,0,0,0.5)]">
-              <CardContent className="flex items-center gap-4 p-5">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black text-white">
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                </div>
+            {/* messages / preview stacked below the form */}
+            <div className="mt-6 space-y-6">
+              {(jobStatus === "pending" || jobStatus === "queued" || jobStatus === "processing") && !generatedPaper ? (
+                <Card className="rounded-[26px] border-none bg-white shadow-[0_25px_45px_-35px_rgba(0,0,0,0.5)]">
+                  <CardContent className="flex items-center gap-4 p-5">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black text-white">
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                    </div>
 
-                <div>
-                  <p className="font-semibold text-[#222]">
-                    AI is generating
-                    your paper
-                  </p>
+                    <div>
+                      <p className="font-semibold text-[#222]">AI is generating your paper</p>
+                      <p className="mt-1 text-sm text-[#777]">{jobMessage}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : null}
 
-                  <p className="mt-1 text-sm text-[#777]">
-                    {jobMessage}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          ) : null}
+              {error ? (
+                <Card className="rounded-[26px] border-red-200 bg-red-50">
+                  <CardContent className="p-5 text-sm text-red-500">{error}</CardContent>
+                </Card>
+              ) : null}
 
-          {error ? (
-            <Card className="rounded-[26px] border-red-200 bg-red-50">
-              <CardContent className="p-5 text-sm text-red-500">
-                {error}
-              </CardContent>
-            </Card>
-          ) : null}
-
-          <ExamPaper
-            paper={generatedPaper}
-            status={jobStatus}
-            message={
-              jobMessage ||
-              undefined
-            }
-            onReset={() => {
-              resetAssessment()
-              setShowBuilder(false)
-            }}
-          />
+              {generatedPaper ? (
+                <ExamPaper
+                  paper={generatedPaper}
+                  status={jobStatus}
+                  message={jobMessage || undefined}
+                  onReset={() => {
+                    resetAssessment()
+                    setShowBuilder(false)
+                  }}
+                />
+              ) : null}
+            </div>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <Shell>
-      <div className="mx-auto max-w-350 p-4 md:p-7">
+    <div className="min-h-screen bg-[#f6f6f7] flex items-start justify-center pt-6">
+      <div className="w-full max-w-[1400px] px-4 md:px-6 lg:px-8">
         {mainContent}
       </div>
-    </Shell>
+    </div>
   )
 }

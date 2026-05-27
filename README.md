@@ -1,49 +1,47 @@
 # VedaAI - AI Assessment Creator
 
-A full-stack assessment generator for teachers. The app lets a teacher create an assignment, upload optional source material, define question types and scoring, and generate a structured question paper with AI-assisted content.
+VedaAI is a full-stack assessment generator for teachers. It lets a user create an assignment, optionally attach source material, generate a structured question paper, and view or download the final output in a clean exam-paper layout.
 
-## What It Does
+## Features
 
-- Create a new assignment from a clean form UI
+- Create assignments with due date, question types, counts, marks, and instructions
 - Upload optional PDF or text source material
-- Set due date, subject, class/section, duration, and instructions
-- Configure question mix, counts, and marks
-- Generate a structured paper with sections, difficulty tags, and marks
-- View the generated output in a readable exam-paper layout
-- Download the generated paper as PDF
-- Receive live generation updates over WebSocket
+- Generate a structured paper with sections, questions, difficulty tags, and marks
+- Receive live job updates over WebSocket
+- View the generated paper on a dedicated page
+- Download the paper as PDF
+- Responsive UI inspired by the provided Figma design
 
 ## Tech Stack
 
 ### Frontend
 
-- Next.js
-- TypeScript
+- Next.js + TypeScript
 - Zustand for state management
 - Socket.IO client
 - React PDF for export
 
 ### Backend
 
-- Node.js + Express
+- Node.js + Express with TypeScript entrypoints
 - MongoDB for assignments and generated results
-- Redis / BullMQ for queued background processing
-- Socket.IO for real-time job updates
-- AI service that converts form input into a structured paper
+- Redis + BullMQ for queued background processing
+- Socket.IO for real-time updates
+- Structured paper generator that builds the paper before rendering
 
 ## Architecture
 
-1. The teacher submits the assignment form from the frontend.
-2. The backend validates and stores the assignment in MongoDB.
-3. If a queue is available, the job is pushed to BullMQ; otherwise it is processed immediately.
-4. The worker / processor builds a structured paper with sections, questions, marks, and difficulty.
-5. The backend persists the generated result and emits WebSocket updates.
-6. The frontend listens for those updates and renders the paper preview.
+1. Teacher submits the assignment form from the frontend.
+2. Backend validates the payload and stores the assignment in MongoDB.
+3. If Redis is configured, the job is pushed to BullMQ; otherwise it is processed immediately.
+4. The worker builds a structured paper with sections, questions, difficulty, and marks.
+5. The backend stores the generated result and emits WebSocket updates.
+6. The frontend listens for updates and renders the paper preview.
 
 ## Project Structure
 
 - `frontend/` - Next.js app, form UI, generated paper preview, PDF export
-- `backend/` - Express API, assignment routes, queue, worker, AI generator
+- `backend/` - Express API, TypeScript server, queue, worker, AI generator
 
 ## Setup
 
@@ -59,24 +57,24 @@ npm install
 
 ### 2. Configure environment variables
 
-Create the needed `.env` files in `backend/` and `frontend/`.
+Create `.env` files in both `backend/` and `frontend/`.
 
-Example backend variables:
+Backend example:
 
 ```env
 PORT=5000
-MONGODB_URI=your_mongodb_connection_string
+MONGO_URI=your_mongodb_connection_string
 REDIS_URL=your_redis_connection_string
-GOOGLE_GENERATIVE_AI_API_KEY=your_api_key_if_used
+FRONTEND_URL=http://localhost:3000
 ```
 
-Example frontend variables:
+Frontend example:
 
 ```env
 NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
 ```
 
-### 3. Run the app
+### 3. Run locally
 
 Start the backend:
 
@@ -92,6 +90,14 @@ cd frontend
 npm run dev
 ```
 
+### 4. Build backend for production
+
+```bash
+cd backend
+npm run build
+npm start
+```
+
 ## Notes
 
 - File upload is optional.
@@ -99,7 +105,7 @@ npm run dev
 - PDF export uses a dedicated document component for clean formatting.
 - The UI is designed to stay readable on desktop and mobile.
 
-## Submission
+## Submission Checklist
 
 - GitHub repository
 - Deployed link

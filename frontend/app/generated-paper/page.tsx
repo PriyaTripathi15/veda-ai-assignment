@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation"
 import axios from "axios"
 
 import { ExamPaper } from "@/components/exam-paper"
-import Shell from "@/components/shell"
 import type { AssignmentJobStatus, GeneratedPaper } from "@/types/assessment"
 
 const STORAGE_KEY = "vedaai-generated-paper"
@@ -81,18 +80,16 @@ export default function GeneratedPaperPage() {
   }
 
   return (
-    <Shell>
-      <div className="relative mx-auto min-h-screen max-w-350 overflow-hidden border border-[#cfd2d8] bg-[#ececec] p-2 md:min-h-[calc(100vh-3rem)] md:rounded-[26px] md:p-3">
-        <ExamPaper
-          paper={paper}
-          status={status}
-          message={message}
-          onReset={() => {
-            localStorage.removeItem(STORAGE_KEY)
-            router.push("/")
-          }}
-        />
-      </div>
-    </Shell>
+    <div className="relative mx-auto min-h-screen max-w-350 overflow-hidden border border-[#cfd2d8] bg-[#ececec] p-2 md:min-h-[calc(100vh-3rem)] md:rounded-[26px] md:p-3">
+      <ExamPaper
+        paper={paper}
+        status={status}
+        message={message}
+        onReset={() => {
+          localStorage.removeItem(STORAGE_KEY)
+          router.push("/")
+        }}
+      />
+    </div>
   )
 }

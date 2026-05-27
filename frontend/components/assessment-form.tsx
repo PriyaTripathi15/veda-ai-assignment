@@ -187,9 +187,9 @@ export function AssessmentForm({
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] p-5">
-      <div className="flex gap-5">
-        <main className="flex-1 rounded-[40px] bg-white px-8 py-6 card-white">
+    <div className="min-h-screen bg-transparent py-8 md:py-12">
+      <div className="flex justify-center">
+        <main className="w-full max-w-[1100px] rounded-[40px] bg-white px-8 py-8 card-white">
           {/* HEADER */}
           <div className="flex items-center justify-between border-b border-[#f1f1f1] pb-6">
             <div className="flex items-center gap-4">
@@ -425,7 +425,7 @@ export function AssessmentForm({
                     className="grid grid-cols-[1fr_170px_120px] items-center gap-6"
                   >
                     {/* SELECT */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 text-black">
                       <Select
                         value={item.type}
                         onValueChange={(value) => {
