@@ -17,10 +17,14 @@ void connectDB()
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "https://veda-ai-assignment-1-8wmn.onrender.com",
+    ],
     credentials: true,
   })
-)
+);
+
 app.use(express.json())
 
 app.use("/api/assignments", assignmentRoutes)
