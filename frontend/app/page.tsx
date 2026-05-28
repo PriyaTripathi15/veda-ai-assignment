@@ -30,7 +30,7 @@ import type {
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL ||
-  "http://localhost:5000"
+  "https://veda-ai-assignment-rfrx.onrender.com/"
 
 export default function Home() {
   const router = useRouter()

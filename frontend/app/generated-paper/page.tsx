@@ -8,7 +8,7 @@ import { ExamPaper } from "@/components/exam-paper"
 import type { AssignmentJobStatus, GeneratedPaper } from "@/types/assessment"
 
 const STORAGE_KEY = "vedaai-generated-paper"
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000"
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://veda-ai-assignment-rfrx.onrender.com/"
 
 export default function GeneratedPaperPage() {
   const router = useRouter()
